@@ -2,11 +2,14 @@ package br.com.duxusdesafio.Infrastructure.Service;
 
 import br.com.duxusdesafio.Application.Dto.IntegranteDto;
 import br.com.duxusdesafio.Application.Dto.TimeDto;
+import br.com.duxusdesafio.Application.Interfaces.Repository.IComposicaoTimeRepository;
 import br.com.duxusdesafio.Application.Interfaces.Repository.ITimeRepository;
 import br.com.duxusdesafio.Application.Interfaces.Services.IApiService;
+import br.com.duxusdesafio.Domain.Entity.ComposicaoTime;
 import br.com.duxusdesafio.Domain.Entity.Integrante;
 import br.com.duxusdesafio.Domain.Entity.Time;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -25,12 +28,17 @@ import java.util.stream.Collectors;
  * @author carlosau
  */
 @Service
+@Transactional
 public class ApiService implements IApiService {
 
         private final ITimeRepository repository;
+        private final IComposicaoTimeRepository composicaoTimeRepository;
 
-        public ApiService(ITimeRepository repository) {
+        public ApiService(
+                        ITimeRepository repository,
+                        IComposicaoTimeRepository composicaoTimeRepository) {
                 this.repository = repository;
+                this.composicaoTimeRepository = composicaoTimeRepository;
         }
 
         /**
@@ -74,14 +82,15 @@ public class ApiService implements IApiService {
         public List<String> integrantesDoTimeMaisRecorrente(LocalDate dataInicial, LocalDate dataFinal) {
 
                 Map<String, List<Time>> agrupado = filtrarPorData(dataInicial, dataFinal).stream()
-                                .collect(Collectors.groupingBy(t -> t.getComposicaoTime().stream()
-                                                .map(c -> c.getIntegrante().getNome())
-                                                .sorted()
-                                                .collect(Collectors.joining(","))));
+                                .collect(Collectors.groupingBy(t -> t.getNomeDoClube() + "|"
+                                                + t.getComposicaoTime().stream()
+                                                                .map(c -> c.getIntegrante().getNome())
+                                                                .sorted()
+                                                                .collect(Collectors.joining(","))));
 
                 return agrupado.entrySet().stream()
                                 .max(Comparator.comparingInt(e -> e.getValue().size()))
-                                .map(e -> Arrays.asList(e.getKey().split(",")))
+                                .map(e -> Arrays.asList(e.getKey().split("\\|", 2)[1].split(",")))
                                 .orElse(List.of());
         }
 
