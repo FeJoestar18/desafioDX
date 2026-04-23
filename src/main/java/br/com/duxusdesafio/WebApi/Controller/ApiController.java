@@ -1,10 +1,12 @@
 package br.com.duxusdesafio.WebApi.Controller;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,57 +32,67 @@ public class ApiController {
 
     @ApiOperation("Retorna o time formado em uma data específica")
     @GetMapping("/time")
-    public ResponseEntity<TimeDto> timeDaData(
-            @RequestParam @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate data) {
+    public ResponseEntity<Object> timeDaData(
+            @RequestParam @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate data) {
         TimeDto time = service.timeDaData(data);
-        return ResponseEntity.of(java.util.Optional.ofNullable(time));
+
+        Map<String, Object> response = new HashMap<>();
+
+        if (time != null) {
+            response.put("mensagem", "Time encontrado");
+            response.put("time", time);
+            return ResponseEntity.ok(response);
+        } else {
+            response.put("mensagem", "Não existe time cadastrado para a data " + data);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
     }
 
     @ApiOperation("Retorna o integrante que mais apareceu em times no período")
     @GetMapping("/integrante-mais-usado")
     public IntegranteDto integranteMaisUsado(
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inicio,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fim) {
+            @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate inicio,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate fim) {
         return service.integranteMaisUsado(inicio, fim);
     }
 
     @ApiOperation("Retorna a lista de nomes dos integrantes do time mais recorrente no período")
     @GetMapping("/time-mais-recorrente")
     public List<String> timeMaisRecorrente(
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inicio,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fim) {
+            @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate inicio,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate fim) {
         return service.integrantesDoTimeMaisRecorrente(inicio, fim);
     }
 
     @ApiOperation("Retorna a função mais comum no período")
     @GetMapping("/funcao-mais-recorrente")
     public String funcaoMaisRecorrente(
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inicio,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fim) {
+            @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate inicio,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate fim) {
         return service.funcaoMaisRecorrente(inicio, fim);
     }
 
     @ApiOperation("Retorna o clube mais recorrente no período")
     @GetMapping("/clube-mais-recorrente")
     public String clubeMaisRecorrente(
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inicio,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fim) {
+            @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate inicio,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate fim) {
         return service.clubeMaisRecorrente(inicio, fim);
     }
 
     @ApiOperation("Retorna a contagem de vezes que cada clube apareceu no período")
     @GetMapping("/contagem-clubes")
     public Map<String, Long> contagemClubes(
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inicio,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fim) {
+            @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate inicio,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate fim) {
         return service.contagemDeClubesNoPeriodo(inicio, fim);
     }
 
     @ApiOperation("Retorna a contagem de vezes que cada função apareceu no período")
     @GetMapping("/contagem-funcoes")
     public Map<String, Long> contagemFuncoes(
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inicio,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fim) {
+            @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate inicio,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate fim) {
         return service.contagemPorFuncao(inicio, fim);
     }
 }
