@@ -75,4 +75,4 @@ Visando a escalabilidade, segurança e o amadurecimento da plataforma como um pr
 
 ## Licença
 
-Uso educacional / desafio técnico
+Uso Educacional / desafio técnico para fins de aprendizado e demonstração de habilidades. Não é permitido uso comercial sem autorização prévia.
