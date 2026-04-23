@@ -2,7 +2,7 @@
 
 ## Padrão
 
-Clean Architecture / Layered Architecture
+- **Clean Architecture / Layered Architecture**
 
 ## Camadas
 
