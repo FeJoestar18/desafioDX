@@ -1,4 +1,4 @@
-package br.com.duxusdesafio.Infrastructure.Config;
+package br.com.duxusdesafio.Infrastructure.Config.Http;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -20,7 +20,6 @@ public class GlobalExceptionHandler {
                 "timestamp", LocalDateTime.now(),
                 "status", HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 "error", HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
-                "message", ex.getMessage()
-        );
+                "message", ex.getMessage());
     }
 }
