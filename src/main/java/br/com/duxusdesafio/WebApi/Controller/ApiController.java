@@ -1,16 +1,20 @@
 package br.com.duxusdesafio.WebApi.Controller;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import br.com.duxusdesafio.Application.Dto.IntegranteDto;
 import br.com.duxusdesafio.Application.Dto.TimeDto;
 import br.com.duxusdesafio.Application.Interfaces.Services.IApiService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
 
 @Api(tags = "API de Times")
 @RestController
@@ -26,7 +30,7 @@ public class ApiController {
     @ApiOperation("Retorna o time formado em uma data específica")
     @GetMapping("/time")
     public TimeDto timeDaData(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data) {
+            @RequestParam @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate data) {
         return service.timeDaData(data);
     }
 
