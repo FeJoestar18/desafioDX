@@ -24,4 +24,6 @@ public interface ICadastroService {
     TimeDto buscarTimePorId(long id);
 
     Page<TimeDto> listarTimes(Pageable pageable);
+
+    java.util.List<IntegranteDto> listarIntegrantesSemTimes();
 }

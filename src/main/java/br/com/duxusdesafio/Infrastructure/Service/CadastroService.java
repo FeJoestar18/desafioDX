@@ -125,6 +125,13 @@ public class CadastroService implements ICadastroService {
     }
 
     @Override
+    public java.util.List<IntegranteDto> listarIntegrantesSemTimes() {
+        return integranteRepository.findByComposicaoTimeIsEmpty().stream()
+                .map(this::toIntegranteDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public Page<TimeDto> listarTimes(Pageable pageable) {
         return timeRepository.findAll(pageable)
                 .map(this::toTimeDto);
