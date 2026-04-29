@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.duxusdesafio.Application.Dto.IntegranteDto;
 import br.com.duxusdesafio.Application.Dto.TimeDto;
-import br.com.duxusdesafio.Application.Helpers.DateParserHelper;
+import br.com.duxusdesafio.Domain.Helpers.DateParserHelper;
 import br.com.duxusdesafio.Application.Interfaces.Services.IApiService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

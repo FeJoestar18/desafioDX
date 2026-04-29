@@ -1,4 +1,4 @@
-package br.com.duxusdesafio.Application.Helpers;
+package br.com.duxusdesafio.Domain.Helpers;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
